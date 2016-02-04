@@ -1,0 +1,3 @@
+rootProject.name = 'TrackrxApp'
+
+include ':app'
