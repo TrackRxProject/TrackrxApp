@@ -14,12 +14,7 @@ import React, {
 } from 'react-native';
 
 class TrackrxApp extends Component {
-  buttonClicked() {
-    console.log('button clicked');
-  }
-
   render() {
-    console.log('rendering');
     return (
       <View>
         <View style={styles.container}>
@@ -31,50 +26,35 @@ class TrackrxApp extends Component {
           </Text>
         </View>
 
-        <View style={styles.buttoncontainer}>
-          <TouchableNativeFeedback
-            style={styles.button}
-            onPress={this.buttonClicked.bind(this)}>
-            <View>
-              <Text style={styles.buttonText}>Pill Notifcation</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-
-        <View style={styles.buttoncontainer}>
-          <TouchableNativeFeedback
-            style={styles.button}
-            onPress={this.buttonClicked.bind(this)}>
-            <View>
-              <Text style={styles.buttonText}>Adherence History</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-
-        <View style={styles.buttoncontainer}>
-          <TouchableNativeFeedback
-            style={styles.button}
-            onPress={this.buttonClicked.bind(this)}>
-            <View>
-              <Text style={styles.buttonText}>Register Bottle</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-
-        <View style={styles.buttoncontainer}>
-          <TouchableNativeFeedback
-            style={styles.button}
-            onPress={this.buttonClicked.bind(this)}>
-            <View>
-              <Text style={styles.buttonText}>Bottle Select</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
+        <NavButton buttonTitle="Pill Notification" />
+        <NavButton buttonTitle="Adherence History" />
+        <NavButton buttonTitle="Register Bottle" />
+        <NavButton buttonTitle="Select Bottle" />
 
       </View>
-        );
+    );
   }
 }
+
+var NavButton = React.createClass({
+  buttonClicked: function() {
+    console.log('button clicked');
+  },
+
+  render: function() {
+    return (
+      <View style={styles.buttoncontainer}>
+        <TouchableNativeFeedback
+          style={styles.button}
+          onPress={this.buttonClicked}>
+          <View>
+            <Text style={styles.buttonText}>{this.props.buttonTitle}</Text>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+    );
+  }
+});
 
 const styles = StyleSheet.create({
   container: {
