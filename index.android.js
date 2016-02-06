@@ -1,97 +1,79 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
 
-import React, {
-  AppRegistry,
-  Component,
-  StyleSheet,
-  Text,
-  View,
-  TouchableNativeFeedback
-} from 'react-native';
+var React = require('react-native');
+var {
+AppRegistry,
+StyleSheet,
+Component,
+Text,
+View,
+Navigator,
+TouchableOpacity,
+} = React;
+
+var HomeScreen = require('./HomeScreen');
+var PillNotify = require('./PillNotify');
+var AdherenceScreen = require('./AdherenceScreen');
+var RegisterScreen = require('./RegisterScreen');
+var SelectScreen = require('./SelectScreen');
 
 class TrackrxApp extends Component {
   render() {
     return (
-      <View>
-        <View style={styles.container}>
-          <Text style={styles.welcome}>
-            TrackRx Helper Application
-          </Text>
-          <Text style={styles.instructions}>
-            Tap a button below go to that view
-          </Text>
-        </View>
-
-        <NavButton buttonTitle="Pill Notification" />
-        <NavButton buttonTitle="Adherence History" />
-        <NavButton buttonTitle="Register Bottle" />
-        <NavButton buttonTitle="Select Bottle" />
-
-      </View>
+      <Navigator
+        initialRoute={{id: 'HomeScreen', name: 'HomeScreen'}}
+        renderScene={this.renderScene.bind(this)}
+        configureScene={(route) => {
+          if (route.sceneConfig) {
+            return route.sceneConfig;
+          }
+            return Navigator.SceneConfigs.FloatFromRight;
+        }} />
     );
+  }
+
+  renderScene(route, navigator) {
+    var routeId = route.id;
+
+    switch(routeId) {
+        case 'HomeScreen':
+          return <HomeScreen navigator={navigator} />;
+          break;
+        case 'PillNotify':
+          return <PillNotify navigator={navigator} />;
+          break;
+        case 'AdherenceScreen':
+          return <AdherenceScreen navigator={navigator} />;
+          break;
+        case 'RegisterScreen':
+          return <RegisterScreen navigator={navigator} />;
+          break;
+        case 'SelectScreen':
+          return <SelectScreen navigator={navigator} />;
+          break;
+        default:
+          return null;
+    }
   }
 }
 
-var NavButton = React.createClass({
-  buttonClicked: function() {
-    console.log('button clicked');
-  },
-
-  render: function() {
-    return (
-      <View style={styles.buttoncontainer}>
-        <TouchableNativeFeedback
-          style={styles.button}
-          onPress={this.buttonClicked}>
-          <View>
-            <Text style={styles.buttonText}>{this.props.buttonTitle}</Text>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
-    );
-  }
-});
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  buttoncontainer: {
-    flex: 1,
-    height: 40,
-    marginVertical: 50,
-    marginHorizontal: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'aqua',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'left',
-    margin: 10,
-  },
-  buttonText: {
-    fontSize: 20,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  button: {
-    textAlign: 'center',
-    color: '#ffffff',
-    marginBottom: 7,
-    borderRadius: 2,
-    fontSize: 20,
-  }
+var styles = StyleSheet.create({
+container: {
+flex: 1,
+justifyContent: 'center',
+alignItems: 'center',
+backgroundColor: '#F5FCFF',
+},
+welcome: {
+fontSize: 20,
+textAlign: 'center',
+margin: 10,
+},
+instructions: {
+textAlign: 'center',
+color: '#333333',
+marginBottom: 5,
+},
 });
 
 AppRegistry.registerComponent('TrackrxApp', () => TrackrxApp);
