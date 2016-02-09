@@ -14,7 +14,7 @@ TouchableOpacity,
 var HomeScreen = require('./HomeScreen');
 var PillNotify = require('./PillNotify');
 var AdherenceScreen = require('./AdherenceScreen');
-var RegisterScreen = require('./RegisterScreen');
+var ActivateScreen = require('./ActivateScreen');
 var SelectScreen = require('./SelectScreen');
 
 class TrackrxApp extends Component {
@@ -45,8 +45,8 @@ class TrackrxApp extends Component {
         case 'AdherenceScreen':
           return <AdherenceScreen navigator={navigator} />;
           break;
-        case 'RegisterScreen':
-          return <RegisterScreen navigator={navigator} />;
+        case 'ActivateScreen':
+          return <ActivateScreen navigator={navigator} />;
           break;
         case 'SelectScreen':
           return <SelectScreen navigator={navigator} />;

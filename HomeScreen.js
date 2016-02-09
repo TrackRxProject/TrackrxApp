@@ -36,7 +36,7 @@ class HomeScreen extends Component {
 
         <NavButton {...this.props} buttonTitle="Pill Notification" nextScreen="PillNotify"/>
         <NavButton {...this.props} buttonTitle="Adherence History" nextScreen="AdherenceScreen"/>
-        <NavButton {...this.props} buttonTitle="Register Bottle" nextScreen="RegisterScreen"/>
+        <NavButton {...this.props} buttonTitle="Activate Bottle" nextScreen="ActivateScreen"/>
         <NavButton {...this.props} buttonTitle="Select Bottle" nextScreen="SelectScreen"/>
 
       </View>
