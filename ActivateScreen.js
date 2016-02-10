@@ -13,14 +13,19 @@ import React, {
 class ActivateScreen extends Component {
   buttonClicked() {
     console.log('Button clicked');
-    var request = new Request('http://trackrx.xyz:8000/prescription/1', {
+    var request = new Request('http://trackrx.xyz:8000/prescription/1/activate', {
       headers: new Headers({
-        'Content-Type': 'text/plain'
+        'Content-Type': 'application/json'
       })
     });
     fetch(request, {
-      method: 'GET',
-      mode: 'cors'
+      method: 'POST',
+      mode: 'cors',
+      /*
+      body: JSON.stringfy({
+        uuid: '3'
+      })
+      */
     }).then(function(response) {
       return response.text()
     }).then(function(text) {
@@ -33,7 +38,7 @@ class ActivateScreen extends Component {
       <View>
         <View style={styles.container}>
           <Text style={styles.welcome}>
-            Register Your Bottle Here
+            Activate Your Bottle Here
           </Text>
           <Text style={styles.instructions}>
             Get ya ultrasonic frequencies here!
