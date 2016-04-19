@@ -34,7 +34,7 @@ class HomeScreen extends Component {
           </Text>
         </View>
 
-        <NavButton {...this.props} buttonTitle="Pill Notification" nextScreen="PillNotify"/>
+        <NavButton {...this.props} buttonTitle="Larew Notification" nextScreen="PillNotify"/>
         <NavButton {...this.props} buttonTitle="Adherence History" nextScreen="AdherenceScreen"/>
         <NavButton {...this.props} buttonTitle="Activate Bottle" nextScreen="ActivateScreen"/>
         <NavButton {...this.props} buttonTitle="Select Bottle" nextScreen="SelectScreen"/>
