@@ -107,4 +107,14 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('TrackrxApp', () => TrackrxApp);
+if (GcmAndroid.launchNotification) {
+  var notification = GcmAndroid.launchNotification;
+  var info = JSON.parse(notification.info);
+  Notification.create({
+    subject: info.subject,
+    message: info.message,
+  });
+  GcmAndroid.stopService();
+} else {
+  AppRegistry.registerComponent('TrackrxApp', () => TrackrxApp);
+}
