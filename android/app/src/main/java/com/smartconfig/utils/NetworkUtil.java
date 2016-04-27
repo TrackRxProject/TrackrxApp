@@ -2,7 +2,7 @@
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
-package com.pandaos.smartconfig.utils;
+package com.smartconfig.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -59,7 +59,7 @@ public class NetworkUtil {
 	}
 	
 	public static String intToIp(int i) {
-		return ((i >> 24 ) & 0xFF ) + "." +
+		return ((i >> 24 ) & 0xFF ) + "" +
 				((i >> 16 ) & 0xFF) + "." +
 				((i >> 8 ) & 0xFF) + "." +
 				( i & 0xFF) ;

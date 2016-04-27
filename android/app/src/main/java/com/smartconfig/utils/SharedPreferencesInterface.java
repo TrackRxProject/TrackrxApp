@@ -2,7 +2,7 @@
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
-package com.pandaos.smartconfig.utils;
+package com.smartconfig.utils;
 
 import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultBoolean;
 import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultInt;

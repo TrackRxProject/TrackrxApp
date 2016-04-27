@@ -2,7 +2,7 @@
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
-package com.pandaos.smartconfig.utils;
+package com.smartconfig.utils;
 
 import java.io.IOException;
 import java.net.InetAddress;

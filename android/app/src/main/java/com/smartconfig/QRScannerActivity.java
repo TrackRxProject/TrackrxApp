@@ -1,8 +1,7 @@
-//
+package com.smartconfig;//
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
-package com.pandaos.smartconfig;
 
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -27,9 +26,10 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
-import com.pandaos.smartconfig.utils.CameraPreview;
+import com.trackrxapp.R;
+import com.smartconfig.utils.CameraPreview;
 import com.pandaos.smartconfig.utils.SharedPreferencesInterface_;
-import com.pandaos.smartconfig.utils.ZBarConstants;
+import com.smartconfig.utils.ZBarConstants;
 
 @EActivity(R.layout.activity_qrscanner)
 public class QRScannerActivity extends Activity {

@@ -1,8 +1,7 @@
-//
+package com.smartconfig;//
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
-package com.pandaos.smartconfig;
 
 import android.support.v4.app.Fragment;
 import android.widget.CompoundButton;
@@ -16,6 +15,8 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import com.pandaos.smartconfig.utils.SharedPreferencesInterface_;
+import com.trackrxapp.MainActivity;
+import com.trackrxapp.R;
 
 @EFragment(R.layout.tab_settings_view)
 public class SettingsFragment extends Fragment implements OnCheckedChangeListener{

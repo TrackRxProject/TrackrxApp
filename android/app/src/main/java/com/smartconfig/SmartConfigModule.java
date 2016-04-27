@@ -1,56 +1,45 @@
-//
+package com.smartconfig;//
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
-package com.pandaos.smartconfig;
-
-import net.sourceforge.zbar.Symbol;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.LightingColorFilter;
-import android.support.v4.app.Fragment;
-import android.text.method.PasswordTransformationMethod;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.Background;
+import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.OnActivityResult;
-import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import com.integrity_project.smartconfiglib.SmartConfig;
 import com.integrity_project.smartconfiglib.SmartConfigListener;
-import com.pandaos.smartconfig.utils.MDnsCallbackInterface;
-import com.pandaos.smartconfig.utils.MDnsHelper;
-import com.pandaos.smartconfig.utils.NetworkUtil;
-import com.pandaos.smartconfig.utils.SharedPreferencesInterface_;
-import com.pandaos.smartconfig.utils.SmartConfigConstants;
-import com.pandaos.smartconfig.utils.ZBarConstants;
+import com.smartconfig.utils.MDnsCallbackInterface;
+import com.smartconfig.utils.MDnsHelper;
+import com.smartconfig.utils.SmartConfigConstants;
 
-@EFragment(R.layout.tab_smartconfig_view)
-public class SmartConfigFragment extends Fragment {
-	
+import org.json.JSONArray;
+
+public class SmartConfigModule extends ReactContextBaseJavaModule implements ActivityEventListener {
+
+    private Callback smartConfigCallback;
+
+    public SmartConfigModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+        reactContext.addActivityEventListener(this);
+    }
+
+    @Override
+    public String getName() {
+        return "SmartConfig";
+    }
+
 	int runTime;
 	boolean isPasswordShown = false;
 	boolean isStartClicked = false;
@@ -67,9 +56,7 @@ public class SmartConfigFragment extends Fragment {
 	byte[] freeData;
 	SmartConfig smartConfig;
 	SmartConfigListener smartConfigListener;
-	
-	@Pref
-	SharedPreferencesInterface_ prefs;
+
 	
 	@ViewById
 	TextView title_smartconfig;
@@ -109,12 +96,95 @@ public class SmartConfigFragment extends Fragment {
 	
 	@ViewById
 	ProgressBar smartconfig_progressbar;
-	
+
+    @ReactMethod
+    public void connectBottle(ReadableMap config, Callback successCallback, Callback cancelCallback) {
+        Activity currentActivity = getCurrentActivity();
+
+        if (currentActivity == null) {
+            cancelCallback.invoke("Activity doesn't exist");
+            return;
+        }
+
+        final Intent galleryIntent = new Intent();
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+
+        smartConfigCallback.invoke("unable to connect");
+
+        /*
+        if (pickerSuccessCallback != null) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                pickerCancelCallback.invoke("ImagePicker was cancelled");
+            } else if (resultCode == Activity.RESULT_OK) {
+                Uri uri = intent.getData();
+
+                if (uri == null) {
+                    pickerCancelCallback.invoke("No image data found");
+                } else {
+                    try {
+                        pickerSuccessCallback.invoke(uri);
+                    } catch (Exception e) {
+                        pickerCancelCallback.invoke("No image data found");
+                    }
+                }
+            }
+        }
+        */
+
+    }
+
+    public void startSmartConfig() {
+        // runProgressBar();
+        foundNewDevice = false;
+        String passwordKey = "Qualcomm2015"; // smartconfig_network_pass_field.getText().toString().trim();
+        byte[] paddedEncryptionKey;
+        String SSID = "AbrahamLinksys"; // smartconfig_network_name_field.getText().toString().trim();
+        String gateway = "192.168.1.1"; // NetworkUtil.getGateway(getActivity());
+
+
+        if (smartconfig_key_field.getText().length() > 0) {
+            paddedEncryptionKey = (smartconfig_key_field.getText().toString() + SmartConfigConstants.ZERO_PADDING_16).substring(0, 16).trim().getBytes();
+        } else {
+            paddedEncryptionKey = null;
+        }
+
+        if (smartconfig_device_name_field.getText().length() > 0) { // device name isn't empty
+            byte[] freeDataChars = new byte[smartconfig_device_name_field.getText().length() + 2];
+            freeDataChars[0] = 0x03;
+            freeDataChars[1] = (byte) smartconfig_device_name_field.getText().length();
+            for (int i=0; i<smartconfig_device_name_field.getText().length(); i++) {
+                freeDataChars[i+2] = (byte) smartconfig_device_name_field.getText().charAt(i);
+            }
+            freeData = freeDataChars;
+        } else {
+            freeData = new byte[1];
+            freeData[0] = 0x03;
+        }
+
+        smartConfig = null;
+        smartConfigListener = new SmartConfigListener() {
+            @Override
+            public void onSmartConfigEvent(SmtCfgEvent event, Exception e) {}
+        };
+
+        try {
+            smartConfig = new SmartConfig(smartConfigListener, freeData, passwordKey, paddedEncryptionKey, gateway, SSID, (byte) 0, "");
+            smartConfig.transmitSettings();
+            // lookForNewDevice();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
 	BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
 		
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			smartconfig_network_name_field.setText(NetworkUtil.getWifiName(getActivity()));
+			smartconfig_network_name_field.setText("Abraham Linksys");
 		}
 	};
 	
@@ -128,7 +198,18 @@ public class SmartConfigFragment extends Fragment {
 			}
 		}
 	};
-	
+
+
+    @Override
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+        return Collections.emptyList();
+    }
+
 	@AfterViews
 	void afterViews() {
 		smartconfig_progressbar.getProgressDrawable().setColorFilter(new LightingColorFilter(0xFFCC0000, 0x00000000)); //color the progress bar TI red
@@ -185,25 +266,7 @@ public class SmartConfigFragment extends Fragment {
 			}
 		}
 	}
-	
-	@Click
-	void smartconfig_network_pass_eye() { // toggle if the password it shown or hidden
-		isPasswordShown = !isPasswordShown;
-		if (isPasswordShown) {
-			smartconfig_network_pass_field.setTransformationMethod(null);
-//			smartconfig_key_field.setTransformationMethod(null);
-		} else {
-			smartconfig_network_pass_field.setTransformationMethod(new PasswordTransformationMethod());
-//			smartconfig_key_field.setTransformationMethod(new PasswordTransformationMethod());
-		}
-	}
-	
-	@Click
-	void smartconfig_key_button() { // start QR scanner
-		Intent intent = new Intent(getActivity(), QRScannerActivity_.class);
-		intent.putExtra(ZBarConstants.SCAN_MODES, new int[]{Symbol.QRCODE});
-		startActivityForResult(intent, ZBarConstants.ZBAR_SCANNER_REQUEST);
-	}
+
 	
 	@OnActivityResult(ZBarConstants.ZBAR_SCANNER_REQUEST)
 	void onResult(int resultCode, Intent returnIntent) { // returned from QR scanner activity 
@@ -219,7 +282,7 @@ public class SmartConfigFragment extends Fragment {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Background
 	void runProgressBar() {
 		isStartClicked = true;
@@ -246,88 +309,7 @@ public class SmartConfigFragment extends Fragment {
 			stopSmartConfig();
 		}
 	}
-	
-	@UiThread
-	void updateProgressBar(int runTime) {
-		if (smartconfig_progressbar != null)
-			smartconfig_progressbar.setProgress(smartconfig_progressbar.getMax() * runTime / SmartConfigConstants.SC_RUNTIME);
-	}
-	
-	@UiThread
-	void resetProgressBar() {
-		updateProgressBar(0);
-		smartconfig_start.setText(R.string.smartconfig_start);
-		smartconfig_progressbar.setVisibility(View.INVISIBLE);
-		((MainActivity)getActivity()).initTabs(0);
-	}
-	
-	@UiThread
-	void hideTabs() {
-		smartconfig_start.setText(R.string.smartconfig_cancel);
-		smartconfig_progressbar.setVisibility(View.VISIBLE);
-		((MainActivity)getActivity()).tabhost.clearAllTabs();
-	}
-	
-	public void showPasswordDialog() {
-		AlertDialog noPasswordDialog = new AlertDialog.Builder(getActivity()). //create a dialog
-				setTitle("No Password Entered").
-				setMessage("You did not enter a password. Would you like to continue?").
-				setPositiveButton("Yes", new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) { //the user clicked yes
-						startSmartConfig();
-					}
-				}).
-				setNegativeButton("No", new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// the user clicked no. do nothing...
-					}
-				}).setCancelable(false).
-				create();
-		noPasswordDialog.show(); //show the dialog
-	}
-	
-	public void startSmartConfig() {
-		runProgressBar();
-		foundNewDevice = false;
-		String passwordKey = smartconfig_network_pass_field.getText().toString().trim();
-		byte[] paddedEncryptionKey;
-		String SSID = smartconfig_network_name_field.getText().toString().trim();
-		String gateway = NetworkUtil.getGateway(getActivity());
-		if (smartconfig_key_field.getText().length() > 0) {
-			paddedEncryptionKey = (smartconfig_key_field.getText().toString() + SmartConfigConstants.ZERO_PADDING_16).substring(0, 16).trim().getBytes();
-		} else {
-			paddedEncryptionKey = null;
-		}
-		if (smartconfig_device_name_field.getText().length() > 0) { // device name isn't empty
-			byte[] freeDataChars = new byte[smartconfig_device_name_field.getText().length() + 2];
-			freeDataChars[0] = 0x03;
-			freeDataChars[1] = (byte) smartconfig_device_name_field.getText().length();
-			for (int i=0; i<smartconfig_device_name_field.getText().length(); i++) {
-				freeDataChars[i+2] = (byte) smartconfig_device_name_field.getText().charAt(i);
-			}
-			freeData = freeDataChars;
-		} else {
-			freeData = new byte[1];
-			freeData[0] = 0x03;
-		}
-		smartConfig = null;
-		smartConfigListener = new SmartConfigListener() {
-			@Override
-			public void onSmartConfigEvent(SmtCfgEvent event, Exception e) {}
-		};
-		try {
-			smartConfig = new SmartConfig(smartConfigListener, freeData, passwordKey, paddedEncryptionKey, gateway, SSID, (byte) 0, "");
-			smartConfig.transmitSettings();
-			lookForNewDevice();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public void stopSmartConfig() {
 		try {
 			smartConfig.stopTransmitting();
@@ -435,28 +417,7 @@ public class SmartConfigFragment extends Fragment {
 				}).setCancelable(false).create();
 		foundNewDeviceDialog.show(); //show the dialog to notify the user
 	}
-	
-	@UiThread
-	public void notifyNotFoundNewDevice() {
-		AlertDialog wifiDialog = new AlertDialog.Builder(getActivity()). //create a dialog
-				setTitle("No New Device Found!").
-				setMessage("No new device has been found. What would you like to do?").
-				setPositiveButton("Start AP Mode", new OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						((MainActivity)getActivity()).startAPMode();
-					}
-				}).
-				setNegativeButton("Nothing", new OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-					}
-				}).setCancelable(false).create();
-		wifiDialog.show(); //show the dialog
-	}
+
 	
 	public JSONArray removeFromJSONArray(JSONArray array, int index) {
 		JSONArray result = new JSONArray();
@@ -471,5 +432,6 @@ public class SmartConfigFragment extends Fragment {
 		}
 		return result;
 	}
-	
+	*/
+
 }

@@ -1,8 +1,6 @@
-//
+package com.smartconfig;//
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
-
-package com.pandaos.smartconfig;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,11 +21,13 @@ import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
-import com.pandaos.smartconfig.utils.Device;
-import com.pandaos.smartconfig.utils.DeviceListAdapter;
-import com.pandaos.smartconfig.utils.RecentDeviceListAdapter;
+import com.trackrxapp.MainActivity;
+import com.trackrxapp.R;
+import com.smartconfig.utils.Device;
+import com.smartconfig.utils.DeviceListAdapter;
+import com.smartconfig.utils.RecentDeviceListAdapter;
 import com.pandaos.smartconfig.utils.SharedPreferencesInterface_;
-import com.pandaos.smartconfig.utils.SmartConfigConstants;
+import com.smartconfig.utils.SmartConfigConstants;
 
 @EFragment(R.layout.tab_devices_view)
 public class DevicesFragment extends Fragment {

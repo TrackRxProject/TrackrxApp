@@ -2,7 +2,7 @@
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
-package com.pandaos.smartconfig.utils;
+package com.smartconfig.utils;
 
 public interface ZBarConstants {
 	public static final String SCAN_MODES = "SCAN_MODES";

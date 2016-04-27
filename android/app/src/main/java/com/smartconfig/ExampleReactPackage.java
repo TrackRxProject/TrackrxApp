@@ -1,8 +1,4 @@
-package com.oney.gcm;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+package com.smartconfig;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
@@ -11,10 +7,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.fresco.FrescoModule;
 import com.facebook.react.modules.intent.IntentModule;
 import com.facebook.react.modules.location.LocationModule;
-//import com.facebook.react.modules.netinfo.NetInfoModule;
 import com.facebook.react.modules.network.NetworkingModule;
 import com.facebook.react.modules.storage.AsyncStorageModule;
-//import com.facebook.react.modules.toast.ToastModule;
 import com.facebook.react.modules.websocket.WebSocketModule;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.views.drawer.ReactDrawerLayoutManager;
@@ -33,12 +27,19 @@ import com.facebook.react.views.toolbar.ReactToolbarManager;
 import com.facebook.react.views.view.ReactViewManager;
 import com.facebook.react.views.viewpager.ReactViewPagerManager;
 import com.facebook.react.views.webview.ReactWebViewManager;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+//import com.facebook.react.modules.netinfo.NetInfoModule;
+//import com.facebook.react.modules.toast.ToastModule;
 //import com.facebook.react.modules.clipboard.ClipboardModule;
 
 /**
  * Package defining basic modules and view managers.
  */
-public class MainReactPackage implements ReactPackage {
+public class ExampleReactPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
