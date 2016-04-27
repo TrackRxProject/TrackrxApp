@@ -4,7 +4,7 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.oney.gcm.GcmPackage;
-import com.smartconfig.*;
+import com.smartconfig.SmartConfigPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +41,7 @@ public class MainActivity extends ReactActivity {
         new MainReactPackage(),
         new GcmPackage(),
         new NotificationPackage(this),
-        new SmartConfigPackage(this)
+        new SmartConfigPackage()
       );
     }
 }

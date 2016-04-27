@@ -9,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.googlecode.androidannotations.annotations.EViewGroup;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.pandaos.smartconfig.R;
 
-@EViewGroup(R.layout.list_devices_item)
+
 public class DeviceItemView extends RelativeLayout {
 
 	@ViewById

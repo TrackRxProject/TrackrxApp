@@ -104,6 +104,8 @@ public class SmartConfigModule extends ReactContextBaseJavaModule implements Act
         if (currentActivity == null) {
             cancelCallback.invoke("Activity doesn't exist");
             return;
+        } else {
+            successCallback.invoke("Activity does exist");
         }
 
         final Intent galleryIntent = new Intent();

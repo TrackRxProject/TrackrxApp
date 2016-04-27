@@ -52,7 +52,7 @@ class TrackrxApp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'PillNotify', name: 'PillNotify'}}
+        initialRoute={{id: 'HomeScreen', name: 'HomeScreen'}}
         renderScene={this.renderScene.bind(this)}
         configureScene={(route) => {
           if (route.sceneConfig) {

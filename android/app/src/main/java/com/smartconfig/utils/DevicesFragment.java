@@ -1,4 +1,4 @@
-package com.smartconfig;//
+package com.smartconfig.utils;//
 //  Copyright (c) 2014 Texas Instruments. All rights reserved.
 //
 
@@ -16,25 +16,18 @@ import android.widget.ProgressBar;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
-import com.trackrxapp.MainActivity;
-import com.trackrxapp.R;
-import com.smartconfig.utils.Device;
-import com.smartconfig.utils.DeviceListAdapter;
-import com.smartconfig.utils.RecentDeviceListAdapter;
-import com.pandaos.smartconfig.utils.SharedPreferencesInterface_;
-import com.smartconfig.utils.SmartConfigConstants;
 
-@EFragment(R.layout.tab_devices_view)
+
 public class DevicesFragment extends Fragment {
-		
+
+    /*
 	@Pref
 	SharedPreferencesInterface_ prefs;
-		
+	*/
+
 	@ViewById
 	ImageView devices_refresh_button;
 	
@@ -78,11 +71,13 @@ public class DevicesFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		/*
 		if (prefs.isScanning().get()) {
 			showRefreshProgress();
 		} else {
 			hideRefreshProgress();
 		}
+		*/
 		getActivity().registerReceiver(scanFinishedReceiver, new IntentFilter(SmartConfigConstants.SCAN_FINISHED_BROADCAST_ACTION));
 		getActivity().registerReceiver(deviceFoundReceiver, new IntentFilter(SmartConfigConstants.DEVICE_FOUND_BROADCAST_ACTION));
 		updateDeviceList();
@@ -99,11 +94,11 @@ public class DevicesFragment extends Fragment {
 	@Click
 	void devices_refresh_button() {
 		showRefreshProgress();
-		prefs.devicesArray().put("[]");
-		prefs.recentDevicesArray().put("[]");
+		// prefs.devicesArray().put("[]");
+		// prefs.recentDevicesArray().put("[]");
 		updateDeviceList();
 		updateRecentDeviceList();
-		((MainActivity)getActivity()).scanForDevices();
+		// ((MainActivity)getActivity()).scanForDevices();
 	}
 	
 	@ItemClick

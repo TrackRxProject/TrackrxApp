@@ -10,9 +10,19 @@ import React, {
   TouchableNativeFeedback
 } from 'react-native';
 
+import SmartConfig from './SmartConfig';
+
+
 class ActivateScreen extends Component {
   buttonClicked() {
-    console.log('Button clicked');
+    console.log('Activate Button clicked');
+
+    SmartConfig.connectBottle({}, 
+      (success) => { console.log(success) }, 
+      (error) => { console.log(error) } 
+    );
+
+    /*
     var request = new Request('http://trackrx.xyz:8000/prescription/1/activate', {
       headers: new Headers({
         'Content-Type': 'application/json'
@@ -25,12 +35,14 @@ class ActivateScreen extends Component {
       body: JSON.stringfy({
         uuid: '3'
       })
-      */
+
     }).then(function(response) {
       return response.text()
     }).then(function(text) {
       console.log(text);
     });
+    */
+
   }
 
   render() {

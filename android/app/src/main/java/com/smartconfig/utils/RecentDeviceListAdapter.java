@@ -4,12 +4,6 @@
 
 package com.smartconfig.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +12,23 @@ import android.widget.BaseAdapter;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EBean
 public class RecentDeviceListAdapter extends BaseAdapter {
 	
 	List<Device> recentDevices;
-	
+
+    /*
 	@Pref
 	SharedPreferencesInterface_ prefs;
-	
+    */
+
 	@RootContext
 	Context context;
 
@@ -35,7 +36,7 @@ public class RecentDeviceListAdapter extends BaseAdapter {
 	void initAdapter() {
 		recentDevices = new ArrayList<Device>(); // initialize new list of devices
 		try {
-			JSONArray recentDevicesArray = new JSONArray(prefs.recentDevicesArray().get()); // get the JSON array of devices from the shared preferences
+			JSONArray recentDevicesArray = new JSONArray(); // new JSONArray(prefs.recentDevicesArray().get()); // get the JSON array of devices from the shared preferences
 			for (int i=0; i<recentDevicesArray.length(); i++) { // populate the list
 				recentDevices.add(new Device(recentDevicesArray.getJSONObject(i).getString("name"), recentDevicesArray.getJSONObject(i).getString("host")));
 			}
@@ -49,15 +50,18 @@ public class RecentDeviceListAdapter extends BaseAdapter {
 		super.notifyDataSetChanged();
 		initAdapter();
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		DeviceItemView deviceItemView;
+        /*
 		if (convertView == null) {
 			deviceItemView = DeviceItemView_.build(context);
 		} else {
 			deviceItemView = (DeviceItemView) convertView;
 		}
+		*/
+        deviceItemView = (DeviceItemView) convertView;
 		deviceItemView.bind(getItem(position));
 		return deviceItemView;
 	}
