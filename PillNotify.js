@@ -16,10 +16,12 @@ class PillNotify extends Component {
       <View>
         <View style={styles.container}>
           <Text style={styles.welcome}>
-            Pill Notifications
+            Medication Reminder
           </Text>
+        </View>
+        <View>
           <Text style={styles.instructions}>
-            Take your medicine Grandma!
+            Your prescription is ready to be dispensed.
           </Text>
         </View>
       </View>
@@ -41,8 +43,9 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
+    fontSize: 36,
     color: '#333333',
-    marginBottom: 5,
+    marginTop: 50,
   },
 });
 
