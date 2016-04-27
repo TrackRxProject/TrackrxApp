@@ -22,7 +22,6 @@ import com.integrity_project.smartconfiglib.SmartConfig;
 import com.integrity_project.smartconfiglib.SmartConfigListener;
 import com.smartconfig.utils.MDnsCallbackInterface;
 import com.smartconfig.utils.MDnsHelper;
-import com.smartconfig.utils.SmartConfigConstants;
 
 import org.json.JSONArray;
 
@@ -106,6 +105,7 @@ public class SmartConfigModule extends ReactContextBaseJavaModule implements Act
             return;
         } else {
             successCallback.invoke("Activity does exist");
+            startSmartConfig();
         }
 
         final Intent galleryIntent = new Intent();
@@ -142,11 +142,12 @@ public class SmartConfigModule extends ReactContextBaseJavaModule implements Act
         // runProgressBar();
         foundNewDevice = false;
         String passwordKey = "Qualcomm2015"; // smartconfig_network_pass_field.getText().toString().trim();
-        byte[] paddedEncryptionKey;
-        String SSID = "AbrahamLinksys"; // smartconfig_network_name_field.getText().toString().trim();
-        String gateway = "192.168.1.1"; // NetworkUtil.getGateway(getActivity());
+        byte[] paddedEncryptionKey = null;
+        String SSID = "Abraham Linksys"; // smartconfig_network_name_field.getText().toString().trim();
+        String gateway = "1.1.168.192"; // NetworkUtil.getGateway(getActivity());
+        String deviceName = "TrackRxApp";
 
-
+        /*
         if (smartconfig_key_field.getText().length() > 0) {
             paddedEncryptionKey = (smartconfig_key_field.getText().toString() + SmartConfigConstants.ZERO_PADDING_16).substring(0, 16).trim().getBytes();
         } else {
@@ -165,6 +166,15 @@ public class SmartConfigModule extends ReactContextBaseJavaModule implements Act
             freeData = new byte[1];
             freeData[0] = 0x03;
         }
+        */
+        byte[] freeDataChars = new byte[deviceName.length() + 2];
+        freeDataChars[0] = 0x03;
+        freeDataChars[1] = (byte) deviceName.length();
+        for (int i=0; i<deviceName.length(); i++) {
+            freeDataChars[i+2] = (byte) deviceName.charAt(i);
+        }
+        freeData = freeDataChars;
+
 
         smartConfig = null;
         smartConfigListener = new SmartConfigListener() {
@@ -175,11 +185,11 @@ public class SmartConfigModule extends ReactContextBaseJavaModule implements Act
         try {
             smartConfig = new SmartConfig(smartConfigListener, freeData, passwordKey, paddedEncryptionKey, gateway, SSID, (byte) 0, "");
             smartConfig.transmitSettings();
-            // lookForNewDevice();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     /*
 	BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
