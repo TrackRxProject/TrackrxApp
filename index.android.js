@@ -1,27 +1,58 @@
 'use strict';
 
-var React = require('react-native');
-var {
-AppRegistry,
-StyleSheet,
-Component,
-Text,
-View,
-Navigator,
-TouchableOpacity,
-} = React;
+import React, {
+  AppRegistry,
+  StyleSheet,
+  Component,
+  Text,
+  View,
+  DeviceEventEmitter,
+  Navigator,
+  TouchableOpacity,
+} from 'react-native';
 
-var HomeScreen = require('./HomeScreen');
-var PillNotify = require('./PillNotify');
-var AdherenceScreen = require('./AdherenceScreen');
-var ActivateScreen = require('./ActivateScreen');
-var SelectScreen = require('./SelectScreen');
+import HomeScreen from  './HomeScreen';
+import PillNotify from './PillNotify';
+import AdherenceScreen from './AdherenceScreen';
+import ActivateScreen from './ActivateScreen';
+import SelectScreen from './SelectScreen';
+
+import Notification from 'react-native-system-notification';
+import GcmAndroid from 'react-native-gcm-android';
 
 class TrackrxApp extends Component {
+  componentDidMount() {
+    GcmAndroid.addEventListener('register', function(token){
+      console.log('send gcm token to server', token);
+    });
+
+    GcmAndroid.addEventListener('registerError', function(error){
+      console.log('registerError', error.message);
+    });
+
+    GcmAndroid.addEventListener('notification', function(notification){
+      console.log('receive new gcm notification', notification);
+      var info = JSON.parse(notification.data.info);
+      if (!GcmAndroid.isInForeground) {
+        Notification.create({
+          subject: info.subject,
+          message: info.message,
+        });
+      }
+    });
+
+    DeviceEventEmitter.addListener('sysNotificationClick', function(e) {
+      console.log('sysNotificationClick', e);
+    });
+
+    GcmAndroid.requestPermissions();
+
+  }
+
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'HomeScreen', name: 'HomeScreen'}}
+        initialRoute={{id: 'PillNotify', name: 'PillNotify'}}
         renderScene={this.renderScene.bind(this)}
         configureScene={(route) => {
           if (route.sceneConfig) {
@@ -58,22 +89,32 @@ class TrackrxApp extends Component {
 }
 
 var styles = StyleSheet.create({
-container: {
-flex: 1,
-justifyContent: 'center',
-alignItems: 'center',
-backgroundColor: '#F5FCFF',
-},
-welcome: {
-fontSize: 20,
-textAlign: 'center',
-margin: 10,
-},
-instructions: {
-textAlign: 'center',
-color: '#333333',
-marginBottom: 5,
-},
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
 });
 
-AppRegistry.registerComponent('TrackrxApp', () => TrackrxApp);
+if (GcmAndroid.launchNotification) {
+  var notification = GcmAndroid.launchNotification;
+  var info = JSON.parse(notification.info);
+  Notification.create({
+    subject: info.subject,
+    message: info.message,
+  });
+  GcmAndroid.stopService();
+} else {
+  AppRegistry.registerComponent('TrackrxApp', () => TrackrxApp);
+}
