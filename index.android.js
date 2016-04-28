@@ -21,6 +21,13 @@ import Notification from 'react-native-system-notification';
 import GcmAndroid from 'react-native-gcm-android';
 
 class TrackrxApp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      initScreen: "HomeScreen"
+    };
+  }
+
   componentDidMount() {
     GcmAndroid.addEventListener('register', function(token){
       console.log('send gcm token to server', token);
@@ -33,6 +40,7 @@ class TrackrxApp extends Component {
     GcmAndroid.addEventListener('notification', function(notification){
       console.log('receive new gcm notification', notification);
       var info = JSON.parse(notification.data.info);
+      this.setState({initScreen: 'PillNotify'});
       if (!GcmAndroid.isInForeground) {
         Notification.create({
           subject: info.subject,
@@ -52,7 +60,7 @@ class TrackrxApp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'HomeScreen', name: 'HomeScreen'}}
+        initialRoute={{id: this.state.initScreen, name: this.state.initScreen}}
         renderScene={this.renderScene.bind(this)}
         configureScene={(route) => {
           if (route.sceneConfig) {

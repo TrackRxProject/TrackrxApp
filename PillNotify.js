@@ -6,11 +6,41 @@ import React, {
   StyleSheet,
   Navigator,
   Text,
+  TextInput,
   View,
   TouchableNativeFeedback
 } from 'react-native';
 
 class PillNotify extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: ""
+    };
+  }
+
+  sendCode() {
+    console.log("pin is" + this.state.text);
+    var request = new Request('http://trackrx.xyz:8000/pin/1', {
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    });
+    fetch(request, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({
+        pin: this.state.text
+      })
+
+    }).then(function(response) {
+      return response.text()
+    }).then(function(text) {
+      console.log(text);
+    });
+
+  }
+
   render() {
     return (
       <View>
@@ -23,6 +53,13 @@ class PillNotify extends Component {
           <Text style={styles.instructions}>
             Your prescription is ready to be dispensed.
           </Text>
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            placeholder="Type your pin here"
+            onChangeText={(text) => this.setState({text})}
+            onSubmitEditing={this.sendCode.bind(this)}
+            value={this.state.text}
+          />
         </View>
       </View>
     );
