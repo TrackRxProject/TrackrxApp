@@ -40,7 +40,7 @@ class TrackrxApp extends Component {
     GcmAndroid.addEventListener('notification', function(notification){
       console.log('receive new gcm notification', notification);
       var info = JSON.parse(notification.data.info);
-      this.setState({initScreen: 'PillNotify'});
+      // this.setState({initScreen: 'PillNotify'});
       if (!GcmAndroid.isInForeground) {
         Notification.create({
           subject: info.subject,
@@ -60,7 +60,7 @@ class TrackrxApp extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: this.state.initScreen, name: this.state.initScreen}}
+        initialRoute={{id: 'HomeScreen', name: 'HomeScreen'}}
         renderScene={this.renderScene.bind(this)}
         configureScene={(route) => {
           if (route.sceneConfig) {
