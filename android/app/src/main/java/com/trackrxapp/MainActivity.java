@@ -1,6 +1,7 @@
 package com.trackrxapp;
 
 import com.facebook.react.ReactActivity;
+import com.oney.gcm.GcmPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.oney.gcm.GcmPackage;
@@ -39,6 +40,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+        new GcmPackage(),
         new GcmPackage(),
         new NotificationPackage(this),
         new SmartConfigPackage()

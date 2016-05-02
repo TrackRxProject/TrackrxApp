@@ -22,6 +22,11 @@ class AdherenceScreen extends Component {
             History of medication taken:
           </Text>
         </View>
+        <View>
+          <Text style={styles.table}>Monday       | O X O O | 3/4</Text>
+          <Text style={styles.table}>Tuesday      | O X O O | 3/4</Text>
+          <Text style={styles.table}>Wednesday  | O X O O | 3/4</Text>
+        </View>
       </View>
     );
   }
@@ -43,6 +48,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  table: {
+    fontSize: 28,
+    textAlign: 'left',
+    color: '#333333',
+    marginBottom: 15,
   },
 });
 
